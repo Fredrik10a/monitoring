@@ -1,0 +1,46 @@
+version: '3'
+
+services:
+  elasticsearch:
+    container_name: elasticsearch
+    build:
+      context: .
+      dockerfile: Dockerfile.elasticsearch
+    environment:
+      - discovery.type=single-node
+    ports:
+      - "9200:9200"
+
+  logstash:
+    container_name: logstash
+    build:
+      context: .
+      dockerfile: Dockerfile.logstash
+    depends_on:
+      - elasticsearch
+    ports:
+      - "5044:5044"
+
+  kibana:
+    container_name: kibana
+    build:
+      context: .
+      dockerfile: Dockerfile.kibana
+    depends_on:
+      - elasticsearch
+    ports:
+      - "5601:5601"
+    
+  rabbitmq:
+    container_name: rabbitmq
+    build:
+      context: .
+      dockerfile: Dockerfile.rabbitmq
+    depends_on:
+      - elasticsearch
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: "guest"
+      RABBITMQ_DEFAULT_PASS: "guest"
