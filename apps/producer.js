@@ -16,7 +16,7 @@ async function produceRandomEvents(iterations) {
       const message = JSON.stringify(event);
 
       // Publish the message to the queue
-      channel.sendToQueue(queueName, Buffer.from(message));
+      channel.sendToQueue(queueName, Buffer.from(message), { noAck: false });
 
       console.log(`[x] Sent event (${i + 1}/${iterations}): ${message}`);
     }

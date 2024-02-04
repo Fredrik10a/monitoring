@@ -1,40 +1,69 @@
 const amqp = require('amqplib');
 
-async function consumeRandomEvents() {
+async function connectToRabbitMQ() {
   try {
-    // Connect to RabbitMQ server
     const connection = await amqp.connect('amqp://guest:guest@localhost:5672');
     const channel = await connection.createChannel();
 
-    const queueName = 'message_queue';
-    await channel.assertQueue(queueName, { durable: false });
+    return { connection, channel };
+  } catch (error) {
+    console.error('Error connecting to RabbitMQ:', error);
+    throw error;
+  }
+}
 
-    console.log(`[*] Waiting for messages from the "${queueName}" queue.`);
+async function setupQueues(channel) {
+  const queueName = 'message_queue';
+  await channel.assertQueue(queueName, { durable: false });
 
-    // Consume messages from the queue
-    channel.consume(queueName, (message) => {
-      if (message === null) {
-        return;
-      }
+  const queueNameLogstash = 'logstash_queue';
+  await channel.assertQueue(queueNameLogstash, { durable: false });
 
-      // Parse the message content
-      const messageContent = message.content.toString();
-      const event = JSON.parse(messageContent);
+  console.log(`[*] Waiting for messages from the "${queueName}" queue.`);
 
-      // Process the received event
-      processRandomEvent(event);
+  return { queueName, queueNameLogstash };
+}
 
-      // Acknowledge the message
-      channel.ack(message);
-    });
+function consumeMessages(channel, queueName, queueNameLogstash) {
+  channel.consume(queueName, (message) => {
+    if (message === null) {
+      return;
+    }
+
+    const messageContent = message.content.toString();
+    let event = JSON.parse(messageContent);
+    event.data.custom = "ACKED";
+
+    processReceivedEvent(event, channel, queueNameLogstash);
+
+    channel.ack(message);
+  });
+}
+
+function processReceivedEvent(event, channel, queueNameLogstash) {
+  console.log(`[Received] Event: ${JSON.stringify(event)}`);
+
+  event.data.ack = true;
+
+  publishModifiedEvent(event, channel, queueNameLogstash);
+}
+
+function publishModifiedEvent(event, channel, queueNameLogstash) {
+  const modifiedMessage = JSON.stringify(event);
+  channel.sendToQueue(queueNameLogstash, Buffer.from(modifiedMessage));
+  console.log(`[x] Published modified event to "${queueNameLogstash}": ${modifiedMessage}`);
+}
+
+async function startConsuming() {
+  try {
+    const { connection, channel } = await connectToRabbitMQ();
+    const { queueName, queueNameLogstash } = await setupQueues(channel);
+
+    consumeMessages(channel, queueName, queueNameLogstash);
   } catch (error) {
     console.error('Error:', error);
   }
 }
 
-function processRandomEvent(event) {
-  console.log(`[Received] Event: ${JSON.stringify(event)}`);
-}
-
-// Start
-consumeRandomEvents();
+// Start consuming
+startConsuming();
