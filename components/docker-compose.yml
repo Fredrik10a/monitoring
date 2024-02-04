@@ -68,6 +68,22 @@ services:
       RABBITMQ_DEFAULT_PASS: "guest"
     restart: unless-stopped
 
+  prometheus:
+    container_name: prometheus
+    networks:
+      - elastic
+    build:
+      context: .
+      dockerfile: Dockerfile.prometheus
+    depends_on:
+      - rabbitmq
+    ports:
+      - "9090:9090"
+    restart: unless-stopped
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./rules.yml:/etc/prometheus/rules.yml
+
 networks:
   elastic:
     driver: bridge

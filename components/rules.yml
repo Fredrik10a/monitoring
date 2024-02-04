@@ -1,0 +1,9 @@
+groups:
+  - name: rabbitmq.rules
+    rules:
+    - alert: RabbitMQDownAlert
+      expr: up{job="rabbitmq"} == 0
+      for: 1m
+      annotations:
+        summary: "RabbitMQ Down Alert"
+        description: "RabbitMQ is unavailable for more than 1 minute."
