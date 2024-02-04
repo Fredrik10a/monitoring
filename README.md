@@ -6,7 +6,7 @@ Welcome to the Metrics and Monitoring Experiment project! 🚀 This project is c
 
 The primary goal of this project is to explore and integrate components related to metrics, monitoring, and distributed systems. The project utilizes popular tools such as Elasticsearch, Kibana, Logstash, Prometheus, and RabbitMQ.
 
-## Components
+## Components 🛠️
 
 ### Elasticsearch
 
@@ -34,3 +34,7 @@ The primary goal of this project is to explore and integrate components related 
 - **Configuration:** See `Dockerfile.rabbitmq`.
 
 **Note:** This project is currently in development, and updates will be frequent.
+
+## License 📝
+
+This project is licensed under the [MIT License](https://choosealicense.com/licenses/mit/). Your collaboration is not just appreciated; it's essential! Thank you for being a part of this project!
