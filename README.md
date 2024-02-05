@@ -1,6 +1,6 @@
-# Metrics and Monitoring Experiment (Work in Progress)
+# Metrics and Monitoring Experiment (Basic setup)
 
-Welcome to the Metrics and Monitoring Experiment project! 🚀 This project is currently under development and serves as a playground for experimenting with various metrics and monitoring tools.
+Welcome to the Metrics and Monitoring Experiment project! 🚀 This project serves as a playground for experimenting with various metrics and monitoring tools.
 
 ## Overview
 
@@ -33,7 +33,9 @@ The primary goal of this project is to explore and integrate components related 
 - **Purpose:** Message broker for distributed systems.
 - **Configuration:** See `Dockerfile.rabbitmq`.
 
-**Note:** This project is currently in development, and updates will be frequent.
+### APPs
+`npm run start-producer` produces messages onto the message bus.
+`npm run start-consumer` consumes the messages and publish them to the logstash-bus.
 
 ## License 📝
 
