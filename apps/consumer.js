@@ -32,7 +32,6 @@ function consumeMessages(channel, queueName, queueNameLogstash) {
 
     const messageContent = message.content.toString();
     let event = JSON.parse(messageContent);
-    event.data.custom = "ACKED";
 
     processReceivedEvent(event, channel, queueNameLogstash);
 
