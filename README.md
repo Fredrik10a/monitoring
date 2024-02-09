@@ -4,34 +4,33 @@ Welcome to the Metrics and Monitoring Experiment project! 🚀 This project serv
 
 ## Overview
 
-The primary goal of this project is to explore and integrate components related to metrics, monitoring, and distributed systems. The project utilizes popular tools such as Elasticsearch, Kibana, Logstash, Prometheus, and RabbitMQ.
+The primary goal of this project is to explore and integrate components related to metrics, monitoring, and distributed systems. The project utilizes popular tools such as Elasticsearch, Kibana, Logstash, Prometheus, Alertmanager and RabbitMQ.
 
 ## Components 🛠️
 
 ### Elasticsearch
 
 - **Purpose:** Indexing and searching metrics data.
-- **Configuration:** See `Dockerfile.elasticsearch`.
 
 ### Kibana
 
 - **Purpose:** Visualizing and exploring metrics data.
-- **Configuration:** See `Dockerfile.kibana`.
 
 ### Logstash
 
 - **Purpose:** Collecting, processing, and forwarding logs and metrics.
-- **Configuration:** See `Dockerfile.logstash`.
 
 ### Prometheus
 
 - **Purpose:** Monitoring and alerting.
-- **Configuration:** See `Dockerfile.prometheus`.
 
 ### RabbitMQ
 
 - **Purpose:** Message broker for distributed systems.
-- **Configuration:** See `Dockerfile.rabbitmq`.
+
+### Alertmanager
+
+- **Purpose:** Alert manager for rules defined in prometheus.
 
 ### APPs
 `npm run start-producer` produces messages onto the message bus.

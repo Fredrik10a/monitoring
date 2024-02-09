@@ -7,7 +7,7 @@ services:
       - elastic
     build:
       context: .
-      dockerfile: Dockerfile.elasticsearch
+      dockerfile: ./elasticsearch/Dockerfile.elasticsearch
     environment:
       node.name: elasticsearch
       ES_JAVA_OPTS: -Xms512m -Xmx512m
@@ -24,7 +24,7 @@ services:
       - elastic
     build:
       context: .
-      dockerfile: Dockerfile.logstash
+      dockerfile: ./logstash/Dockerfile.logstash
     volumes:
       - ./config-logstash.yml:/usr/share/logstash/config/logstash.yml
       - ./pipeline-logstash.conf:/usr/share/logstash/pipeline/logstash.conf
@@ -43,7 +43,7 @@ services:
       - elastic
     build:
       context: .
-      dockerfile: Dockerfile.kibana
+      dockerfile: ./kibana/Dockerfile.kibana
     volumes:
       - ./kibana.yml:/usr/share/kibana/config/kibana.yml
     depends_on:
@@ -57,7 +57,7 @@ services:
       - elastic
     build:
       context: .
-      dockerfile: Dockerfile.rabbitmq
+      dockerfile: ./rabbitmq/Dockerfile.rabbitmq
     depends_on:
       - elasticsearch
     ports:
