@@ -74,7 +74,7 @@ services:
       - elastic
     build:
       context: .
-      dockerfile: Dockerfile.prometheus
+      dockerfile: ./prometheus/Dockerfile.prometheus
     depends_on:
       - rabbitmq
     ports:
@@ -83,6 +83,22 @@ services:
     volumes:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
       - ./rules.yml:/etc/prometheus/rules.yml
+
+  alertmanager:
+    container_name: alertmanager
+    networks:
+      - elastic
+    build:
+      context: .
+      dockerfile: ./alertmanager/Dockerfile.alertmanager
+    depends_on:
+      - prometheus
+    ports:
+      - "9093:9093"
+    restart: unless-stopped
+    volumes:
+      - "./alertmanager:/config"
+    command: --config.file=/config/alertmanager.yml --log.level=debug
 
 networks:
   elastic:

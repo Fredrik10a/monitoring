@@ -4,6 +4,8 @@ groups:
     - alert: RabbitMQDownAlert
       expr: up{job="rabbitmq"} == 0
       for: 1m
+      labels:
+        severity: critical
       annotations:
         summary: "RabbitMQ Down Alert"
         description: "RabbitMQ is unavailable for more than 1 minute."
